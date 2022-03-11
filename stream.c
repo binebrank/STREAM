@@ -48,6 +48,11 @@
 # include <limits.h>
 # include <sys/time.h>
 
+#ifdef GEM5ROI
+#include "gem5/m5ops.h"
+#endif
+
+
 /*-----------------------------------------------------------------------
  * INSTRUCTIONS:
  *
@@ -337,6 +342,11 @@ main(int argc, char **argv)
     scalar = 3.0;
     for (k=0; k<n_times; k++)
 	{
+
+#ifdef GEM5ROI
+            m5_dump_reset_stats(0,0);
+#endif
+
 	times[0][k] = mysecond();
 #ifdef TUNED
         tuned_STREAM_Copy();
@@ -346,6 +356,10 @@ main(int argc, char **argv)
 	    c[j] = a[j];
 #endif
 	times[0][k] = mysecond() - times[0][k];
+
+#ifdef GEM5ROI
+            m5_dump_reset_stats(0,0);
+#endif
 	
 	times[1][k] = mysecond();
 #ifdef TUNED
@@ -357,6 +371,10 @@ main(int argc, char **argv)
 #endif
 	times[1][k] = mysecond() - times[1][k];
 	
+#ifdef GEM5ROI
+            m5_dump_reset_stats(0,0);
+#endif
+
 	times[2][k] = mysecond();
 #ifdef TUNED
         tuned_STREAM_Add();
@@ -366,6 +384,10 @@ main(int argc, char **argv)
 	    c[j] = a[j]+b[j];
 #endif
 	times[2][k] = mysecond() - times[2][k];
+
+#ifdef GEM5ROI
+            m5_dump_reset_stats(0,0);
+#endif
 	
 	times[3][k] = mysecond();
 #ifdef TUNED
@@ -376,6 +398,11 @@ main(int argc, char **argv)
 	    a[j] = b[j]+scalar*c[j];
 #endif
 	times[3][k] = mysecond() - times[3][k];
+
+#ifdef GEM5ROI
+            m5_dump_reset_stats(0,0);
+#endif
+
 	}
 
     /*	--- SUMMARY --- */
