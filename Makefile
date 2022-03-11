@@ -1,10 +1,11 @@
+GEM5SRC = /home/jusers/brank1/juawei/gem5_armhost
 CC = gcc
-CFLAGS = -O2 -fopenmp
+CFLAGS = -O3 -fopenmp -static
 
 FC = gfortran
-FFLAGS = -O2 -fopenmp
+FFLAGS = -O3 -fopenmp -static
 
-all: stream_f.exe stream_c.exe
+all: stream_f.exe stream_c.exe stream_c_gem5roi.exe
 
 stream_f.exe: stream.f mysecond.o
 	$(CC) $(CFLAGS) -c mysecond.c
@@ -13,6 +14,9 @@ stream_f.exe: stream.f mysecond.o
 
 stream_c.exe: stream.c
 	$(CC) $(CFLAGS) stream.c -o stream_c.exe
+
+stream_c_gem5roi.exe: stream.c
+	$(CC) $(CFLAGS) -DGEM5ROI -I$(GEM5SRC)/include stream.c -L$(GEM5SRC)/util/m5/build/arm64/out -lm5 -o stream_c_gem5roi.exe
 
 clean:
 	rm -f stream_f.exe stream_c.exe *.o
